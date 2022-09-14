@@ -10,6 +10,8 @@
 
 #include "stm32f429xx.h"
 
+#define APB1_CLK_MHz 16
+
 void SysClockConfig(void);
 
 #endif /* INC_CLOCKS_H_ */

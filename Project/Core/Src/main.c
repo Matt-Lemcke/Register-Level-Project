@@ -1,10 +1,20 @@
 
 #include "clocks.h"
+#include "i2c.h"
 
 int main(void)
 {
 	// Configure system clock
 	SysClockConfig();
+
+	// Configure I2C
+	I2C_Handler_t i2c_handle;
+	i2c_handle.I2C = I2C1;
+	i2c_handle.speed = 100;
+	if(I2C_Init(&i2c_handle) != I2C_OK){
+		return 0;
+	}
+	I2C_Status_e passed = I2C_Test_Device(&i2c_handle, 0x50);
 
 	while (1)
 	{

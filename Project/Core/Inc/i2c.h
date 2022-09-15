@@ -12,27 +12,23 @@
 #include "stm32f429xx.h"
 
 typedef enum {
-	I2C_OK,
+	I2C_OK = 1,
 	I2C_ERR,
 	I2C_CLK_ERR
 }I2C_Status_e;
 
-typedef enum {
-	I2C_1 = 0,
-	I2C_2 = 1,
-	I2C_3 = 2,
-	I2C_Port_Count = 3
-}I2C_Port_e; //Should be 1 byte sized
-
 // Change later to adjust for padding
 typedef struct {
-	I2C_Port_e port; //1 byte?
-	uint16_t speed; //2 bytes
+	uint16_t speed; // In kHz // 2 bytes
+	uint8_t scl_pin : 4;
+	uint8_t sda_pin	: 4;
 
-	I2C_TypeDef *I2C; //4 bytes?
+	I2C_TypeDef *I2C; // 4 bytes
+	GPIO_TypeDef *GPIO; // 4 bytes
 
 }I2C_Handler_t;
 
 I2C_Status_e I2C_Init(I2C_Handler_t *handler);
+I2C_Status_e I2C_Test_Device(I2C_Handler_t *handler, uint8_t addr);
 
 #endif /* INC_I2C_H_ */

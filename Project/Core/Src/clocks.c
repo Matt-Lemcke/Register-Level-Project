@@ -26,3 +26,8 @@ void SysClockConfig(void){
 	SystemInit();
 	SystemCoreClockUpdate();
 }
+
+void Delay(uint32_t ms){
+	uint32_t time = 1000*APB1_CLK_MHz*ms;
+	while(time--);
+}

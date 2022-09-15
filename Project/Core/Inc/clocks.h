@@ -13,5 +13,6 @@
 #define APB1_CLK_MHz 16
 
 void SysClockConfig(void);
+void Delay(uint32_t ms);
 
 #endif /* INC_CLOCKS_H_ */

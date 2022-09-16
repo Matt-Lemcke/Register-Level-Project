@@ -18,10 +18,9 @@
 // Private Functions
 void I2C_Reset(I2C_Handler_t *handler);
 void I2C_Start(I2C_Handler_t *handler);
+void I2C_Stop(I2C_Handler_t *handler);
 void I2C_WriteAddr(I2C_Handler_t *handler, uint8_t addr);
-void I2C_WriteData(I2C_Handler_t *handler, uint8_t data);
-
-I2C_Status_e Workaround(I2C_Handler_t *handler);
+I2C_Status_e I2C_Write_Bytes(I2C_Handler_t *handler, uint8_t size);
 
 
 I2C_Status_e I2C_Init(I2C_Handler_t *handler){
@@ -107,6 +106,20 @@ I2C_Status_e I2C_Init(I2C_Handler_t *handler){
 
 }
 
+I2C_Status_e I2C_Write(I2C_Handler_t *handler, uint8_t slave_addr, uint8_t size){
+	I2C_Start(handler);									// START
+	I2C_WriteAddr(handler, (slave_addr<<1) & ~(1<<0));	// Send device address in write mode
+	I2C_Write_Bytes(handler, size);						// Write data
+	I2C_Stop(handler);									// STOP
+	return I2C_OK;
+}
+
+I2C_Status_e I2C_Test_Device(I2C_Handler_t *handler, uint8_t addr){
+	I2C_Start(handler);								// Send START
+	I2C_WriteAddr(handler, (addr<<1) & ~(1<<0));	// Send Address with write command
+	return I2C_OK;
+}
+
 void I2C_Reset(I2C_Handler_t *handler){
 	handler->I2C->CR1 |= (1<<15);	// Toggle reset bit
 	Delay(10);
@@ -123,15 +136,25 @@ void I2C_Start(I2C_Handler_t *handler){
 	while(!(handler->I2C->SR1 & (1<<0)));	// Wait for START to send
 }
 
+void I2C_Stop(I2C_Handler_t *handler){
+	handler->I2C->CR1 |= (1<<9);	// Send STOP
+}
+
 void I2C_WriteAddr(I2C_Handler_t *handler, uint8_t addr){
 	handler->I2C->DR = addr;								// Write address of slave device
 	while(!(handler->I2C->SR1 & (1<<1)));					// Wait to receive ACK
 	uint8_t temp = handler->I2C->SR1 | handler->I2C->SR2;	// Read to reset ADDR flag
 }
 
-I2C_Status_e I2C_Test_Device(I2C_Handler_t *handler, uint8_t addr){
-	I2C_Start(handler);							// Send START
-	I2C_WriteAddr(handler, (addr<<1)|(0<<0));	// Send Address with write command
+I2C_Status_e I2C_Write_Bytes(I2C_Handler_t *handler, uint8_t size){
+
+	for(int i = 0; i<size; i++){
+		while(!(handler->I2C->SR1 & (1<<7)));								// Wait for TxE flag to set
+		handler->I2C->DR = (uint16_t)(handler->buffer[i]) & 0x00FF;			// Write data to data register (keep bits 8:15 as 0)
+	}
+	while(!(handler->I2C->SR1 & (1<<7))&&!(handler->I2C->SR1 & (1<<2)));	// Wait for TxE or BTF flags to set
 	return I2C_OK;
 }
+
+
 

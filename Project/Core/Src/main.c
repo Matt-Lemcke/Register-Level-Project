@@ -14,7 +14,13 @@ int main(void)
 	if(I2C_Init(&i2c_handle) != I2C_OK){
 		return 0;
 	}
-	I2C_Status_e passed = I2C_Test_Device(&i2c_handle, 0x50);
+//	if(I2C_Test_Device(&i2c_handle, 0x50) != I2C_OK){
+//		return 0;
+//	}
+	i2c_handle.buffer[0] = 0x00;
+	i2c_handle.buffer[1] = 0x00;
+	i2c_handle.buffer[2] = 0x11;
+	I2C_Write(&i2c_handle, 0x50, 3);
 
 	while (1)
 	{

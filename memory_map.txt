@@ -1,0 +1,46 @@
+Memory Architecture
+
+8K byte memory chip, 16 bit address
+64 byte pages
+128 pages
+
+Pages 0:1   = pointers (contains bits 6:12 of pointed address)
+Pages 2:127 = data (64 bytes of data each)
+
+
+------------------------------------------------
+0x1FFF    Data Byte
+.
+.
+0x1FC0    Data Byte
+-------------------Page 127---------------------
+.
+.
+.
+------------------------------------------------
+0x00FF    Data Byte
+.
+.
+0x00C0    Data Byte
+-------------------Page 3-----------------------
+------------------------------------------------
+0x00BF    Data Byte
+.
+.
+0x0080    Data Byte
+-------------------Page 2-----------------------
+------------------------------------------------
+0x007F    Reserved
+0x007E    Pointer to page 127   (0x7F)
+.
+.
+0x0040    Pointer to page 65
+-------------------Page 1-----------------------
+------------------------------------------------
+0x003F    Pointer to page 64
+.
+.
+0x0002    Pointer to page 3     (0x03)
+0x0001    Pointer to page 2     (0x02)
+0x0000    Pointer to page pointer (0x01 -> 0x7F)
+-------------------Page 0-----------------------

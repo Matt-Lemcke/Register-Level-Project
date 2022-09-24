@@ -23,6 +23,7 @@ typedef enum {
 	I2C_ERR,
 	I2C_CLK_ERR,
 	I2C_DEV_BUSY,
+	I2C_TIMEOUT,
 	I2C_NACK
 }I2C_Status_e;
 
@@ -34,7 +35,7 @@ typedef struct {
 
 	I2C_TypeDef *I2C; // 4 bytes
 
-	uint8_t buffer[BUFFER_SIZE];	// 32 bytes
+	uint8_t buffer[BUFFER_SIZE + 2];	// 34 bytes
 
 	GPIO_Handle_t *gpio;
 

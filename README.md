@@ -13,10 +13,18 @@ All information regarding peripheral configuration and control was taken from th
 
 ## Goal
 Create driver code for interfaceing with an EEPROM ASIC via I2C communication protocol with the following requirements:
-- Communication error handling
 - Proper abstraction and modularity for portable code and an easy to use interface
+- No use of the hardware abstraction library providied by STMicro
 - Clean, readable code with comments when neccessary
+- Optimized memory management techniques for reading/writing to the 8K EEPROM
 
 ## Hardware
 - Development board: [STM32F429 Discovery](https://www.st.com/resource/en/user_manual/um1670-discovery-kit-with-stm32f429zi-mcu-stmicroelectronics.pdf)
 - EEPROM chip: [24PC64F](https://github.com/Matt-Lemcke/Register-Level-Project/blob/main/24FC64F.pdf)
+
+## What Does It Do?
+This project is an 8-bit data logger that stores temperature measurements taken at 30 second intervals. The temperature data is stored on an 8K byte external EEPROM memory chip to prevent log data loss during a system reset/power off. This device is used to maintain a continuous log indoor ambient temperature inside a house, but could be alterned to record temperature data in more specific use cases.
+
+## Notable Achievemets
+- Extends the life of the EEPROM chip by 64 times by using a paging technique to reduce the number of writes to the current data pointer
+- Reduced the flash memory footprint of the source code by xx% by using a custom hardware abstraction layer

@@ -23,7 +23,7 @@ Create driver code for interfaceing with an EEPROM ASIC via I2C communication pr
 - EEPROM chip: [24PC64F](https://github.com/Matt-Lemcke/Register-Level-Project/blob/main/24FC64F.pdf)
 
 ## What Does It Do?
-This project is an 8-bit data logger that stores temperature measurements taken at 30 second intervals. The temperature data is stored on an 8K byte external EEPROM memory chip to prevent log data loss during a system reset/power off. This device is used to maintain a continuous log indoor ambient temperature inside a house, but could be alterned to record temperature data in more specific use cases.
+This project is an 8-bit data logger that stores temperature measurements taken at 30 second intervals. The temperature data is stored on an 8K byte external EEPROM memory chip to prevent log data loss during a system reset/power off. The application layer of this device was designed for reading indoor ambient temperatures at regular intervals, but could be changed for more specific use cases using the same custom device drivers.
 
 ## Notable Achievemets
 - Extends the life of the EEPROM chip by 64 times by using a paging technique to reduce the number of writes to the current data pointer

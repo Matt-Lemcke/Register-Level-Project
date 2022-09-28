@@ -2,9 +2,13 @@
 #include "clocks.h"
 #include "i2c.h"
 #include "eeprom.h"
+#include "tmp_sensor.h"
+
+
 
 int main(void)
 {
+
 	// Configure system clock
 	SysClockConfig();
 
@@ -15,53 +19,27 @@ int main(void)
 	if(I2C_Init(&i2c_handle) != I2C_OK){
 		return 0;
 	}
-//	if(I2C_Test_Device(&i2c_handle, 0x50) != I2C_OK){
-//		return 0;
-//	}
+
 	EEPROM_t eeprom;
-	uint8_t data[] = {1,2,3,4,5};
-	uint8_t read_data[5];
+
 	eeprom.address = GET_ADDR(0,0,0);
 	eeprom.i2c = &i2c_handle;
-	EEPROM_Status_e status = EEPROM_Init(&eeprom);
-	status = EEPROM_Multi_Write(&eeprom, data, 0, 5);
+	if(EEPROM_Init(&eeprom) != EEPROM_OK){
+		return 0;
+	}
 
-	status = EEPROM_Sequential_Read(&eeprom, &read_data, 0, 5);
+	TMP_Status_e status = TMP_Init();
 
-//	i2c_handle.buffer[0] = 0x00;
-//	i2c_handle.buffer[1] = 0x00;
-//	i2c_handle.buffer[2] = 0x05;
-//	i2c_handle.buffer[3] = 0x01;
-//	i2c_handle.buffer[4] = 0x01;
-//	I2C_Write(&i2c_handle, 0x50, 5, STOP);
-//
-//	i2c_handle.buffer[0] = 0x00;
-//	i2c_handle.buffer[1] = 0x00;
-//	I2C_Write(&i2c_handle, 0x50, 2, NO_STOP);
-//	I2C_Read(&i2c_handle, 0x50, 3);
-//	uint8_t read_data = i2c_handle.buffer[0];
+
+
+	uint16_t temp;
 
 	while (1)
 	{
+		Delay(1000);
+		temp = TMP_Read_Volts();
 
 	}
 
 }
 
-
-//#ifdef  USE_FULL_ASSERT
-///**
-//  * @brief  Reports the name of the source file and the source line number
-//  *         where the assert_param error has occurred.
-//  * @param  file: pointer to the source file name
-//  * @param  line: assert_param error line source number
-//  * @retval None
-//  */
-//void assert_failed(uint8_t *file, uint32_t line)
-//{
-//  /* USER CODE BEGIN 6 */
-//  /* User can add his own implementation to report the file name and line number,
-//     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-//  /* USER CODE END 6 */
-//}
-//#endif /* USE_FULL_ASSERT */

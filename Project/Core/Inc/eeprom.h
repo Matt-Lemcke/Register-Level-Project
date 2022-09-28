@@ -13,9 +13,6 @@
 // Device I2C slave address
 #define GET_ADDR(a0, a1, a2) ((5<<4)|(a2<<2)|(a1<<1)|(a0<<0))
 
-// Memory addresses
-#define ADDR_BOTTOM 	0x0000
-#define ADDR_TOP		0x1FFF
 
 typedef enum{
 	EEPROM_OK,
@@ -29,6 +26,7 @@ typedef struct{
 }EEPROM_t;
 
 EEPROM_Status_e EEPROM_Init(EEPROM_t *handler);
-
+EEPROM_Status_e EEPROM_Log_Data(EEPROM_t *handler, uint8_t *data, uint8_t size);
+EEPROM_Status_e EEPROM_Sequential_Read(EEPROM_t *handler, uint8_t *data, uint16_t mem_addr, uint8_t size);
 
 #endif /* INC_EEPROM_H_ */

@@ -1,5 +1,5 @@
 # Register-Level-Project
-Firmware developed in C for the STM32L429 microcontroller with custom hardware abstraction for minimal memory usage.
+Firmware developed in C for the STM32F429 microcontroller with custom hardware abstraction for minimal memory usage.
 
 ## Purpose
 This is a learning project with a focus on bare-metal programming of ARM-based devices. The goal is to develop firmware using the STMirco CMSIS library for register level programming of peripherals such as:

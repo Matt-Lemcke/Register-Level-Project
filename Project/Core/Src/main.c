@@ -20,24 +20,25 @@ int main(void)
 		return 0;
 	}
 
+	// Configure EEPROM
 	EEPROM_t eeprom;
-
 	eeprom.address = GET_ADDR(0,0,0);
 	eeprom.i2c = &i2c_handle;
 	if(EEPROM_Init(&eeprom) != EEPROM_OK){
 		return 0;
 	}
 
-	TMP_Status_e status = TMP_Init();
-
-
-
-	uint16_t temp;
+	//Initialize temperature sensor
+	TMP_Init();
 
 	while (1)
 	{
-		Delay(1000);
-		temp = TMP_Read_Volts();
+		if(Timer_Flag_Set()){
+			uint8_t temp_data = TMP_Read_Volts();
+			if(EEPROM_Log_Data(&eeprom, &temp_data, 1) != EEPROM_OK){
+				return 0;
+			}
+		}
 
 	}
 

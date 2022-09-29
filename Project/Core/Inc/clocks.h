@@ -11,14 +11,7 @@
 #include "stm32f429xx.h"
 
 #define APB1_CLK_MHz        16
-#define TIMEOUT_PERIOD_US   10
-
-
-typedef enum {
-    CLK_TIMEOUT,
-    CLK_ERR,
-    CLK_OK
-}CLK_Status_e;
+#define TIM7_PERIOD_MS		5000
 
 typedef enum {
     SET,
@@ -27,8 +20,6 @@ typedef enum {
 
 void SysClockConfig(void);
 void Delay(uint32_t ms);
-void StartTimeout(uint32_t timeout_us);
-uint8_t TimeoutFlag(void);
-CLK_Status_e EndTimeout(void);
+uint8_t Timer_Flag_Set(void);
 
 #endif /* INC_CLOCKS_H_ */

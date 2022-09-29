@@ -37,9 +37,10 @@ EEPROM_Status_e EEPROM_Write(EEPROM_t *handler, uint8_t *data, uint16_t mem_addr
 EEPROM_Status_e EEPROM_Multi_Write(EEPROM_t *handler, uint8_t *data, uint16_t mem_addr, uint8_t size);
 EEPROM_Status_e EEPROM_Sequential_Read(EEPROM_t *handler, uint8_t *data, uint16_t mem_addr, uint8_t size);
 
-/*   ----------------------
+/*	----------------------
 *	Public Functions
-*/   ----------------------
+*	----------------------
+*/
 
 EEPROM_Status_e EEPROM_Init(EEPROM_t *handler){
 
@@ -62,10 +63,6 @@ EEPROM_Status_e EEPROM_Init(EEPROM_t *handler){
 		return EEPROM_ERR;
 	}
 	EEPROM_Increment_Page_Pointer(handler);								// Move to next page pointer
-	if(EEPROM_Random_Read(handler, &current_page_addr, page_pointer_addr)!=EEPROM_OK){		// Read address of the current page
-		return EEPROM_ERR;
-	}
-	ALIGN_ADDR(current_page_addr);
 	return EEPROM_OK;
 }
 
@@ -151,9 +148,25 @@ EEPROM_Status_e EEPROM_Sequential_Read(EEPROM_t *handler, uint8_t *data, uint16_
 	return EEPROM_OK;
 }
 
-/*   ----------------------
+/*	----------------------
 *	Private Functions
-*/   ----------------------
+*	----------------------
+*/
+
+EEPROM_Status_e EEPROM_Increment_Page_Pointer(EEPROM_t *handler){
+	page_pointer_addr++;
+	if(!(page_pointer_addr % DATA_BASE_ADDR)){
+		page_pointer_addr = 0x01;
+	}
+	if(EEPROM_Write(handler, &page_pointer_addr, POINTER_POINTER_ADDR) != EEPROM_OK){
+		return EEPROM_ERR;
+	}
+	if(EEPROM_Random_Read(handler, &current_page_addr, page_pointer_addr) != EEPROM_OK){		// Read address of the current page
+		return EEPROM_ERR;
+	}
+	ALIGN_ADDR(current_page_addr);
+	return EEPROM_OK;
+}
 	
 EEPROM_Status_e EEPROM_Clear_Page(EEPROM_t *handler, uint16_t page_base_addr){
 	uint8_t invalid_data[PAGE_SIZE];

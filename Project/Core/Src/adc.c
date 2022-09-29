@@ -12,6 +12,7 @@
 #define ADC2_ENR	(1<<9)
 #define ADC3_ENR	(1<<10)
 
+
 ADC_Status_e ADC_Init(ADC_Handler_t *handler){
 
 	// Configured for PC0, channel 10

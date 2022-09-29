@@ -34,12 +34,9 @@ TMP_Status_e TMP_Init(void){
 }
 
 uint8_t TMP_Read_Volts(void){
-	uint16_t data;
-	for(int i = 0; i<BUFFER_SIZE; i++){
-		data += (adc_buffer[i]>>8);	// Realign data bits
-	}
-	data = data/BUFFER_SIZE;
-	return (uint8_t)data;
+	uint16_t data = adc_handle.adc->DR;
+	data = data >> 8;
+	return (uint8_t)(data);
 }
 
 float TMP_Conversion(float volts){

@@ -19,9 +19,10 @@ I2C_Status_e I2C_Write_Addr(I2C_Handler_t *handler, uint8_t addr);
 I2C_Status_e I2C_Write_Bytes(I2C_Handler_t *handler, uint8_t size);
 I2C_Status_e I2C_Read_Bytes(I2C_Handler_t *handler, uint8_t size);
 
-/*   -----------------------
+/*	----------------------
 *	Public Functions
-*/   -----------------------
+*	----------------------
+*/
 
 I2C_Status_e I2C_Init(I2C_Handler_t *handler){
 
@@ -105,7 +106,7 @@ I2C_Status_e I2C_Init(I2C_Handler_t *handler){
 I2C_Status_e I2C_Write(I2C_Handler_t *handler, uint8_t slave_addr, uint8_t size, uint8_t send_stop){
 
 	// Send START and device address in write mode
-	if(I2C_Write_Addr(handler, SLAVE_WRITE(slave_addr) != I2C_OK){
+	if(I2C_Write_Addr(handler, SLAVE_WRITE(slave_addr)) != I2C_OK){
 		return I2C_ERR;
 	}
 	I2C_Write_Bytes(handler, size);			// Write data from buffer
@@ -132,15 +133,16 @@ I2C_Status_e I2C_Read(I2C_Handler_t *handler, uint8_t slave_addr, uint8_t size){
 I2C_Status_e I2C_Test_Device(I2C_Handler_t *handler, uint8_t slave_addr){
 	
 	// Send START and device address in write mode
-	if(I2C_Write_Addr(handler, SLAVE_WRITE(slave_addr) != I2C_OK){
+	if(I2C_Write_Addr(handler, SLAVE_WRITE(slave_addr)) != I2C_OK){
 		return I2C_ERR;
 	}
 	return I2C_OK;
 }
 
-/*   -----------------------
+/*	----------------------
 *	Private Functions
-*/   -----------------------
+*	----------------------
+*/
 
 void I2C_Reset(I2C_Handler_t *handler){
 	// Toggle reset bit
@@ -177,7 +179,7 @@ I2C_Status_e I2C_Write_Addr(I2C_Handler_t *handler, uint8_t addr){
 		uint16_t temp = handler->I2C->SR1 | handler->I2C->SR2;	// Read registers to clear SB flag
 		handler->I2C->DR = addr;				// Write address of slave device
 
-		Delay(50);
+		Delay(5);
 		if(handler->I2C->SR1 & (1<<1)){				// Check if ACK received
 			status = I2C_OK;
 		}

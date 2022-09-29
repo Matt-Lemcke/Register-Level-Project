@@ -28,4 +28,4 @@ This project is an 8-bit data logger that stores temperature measurements taken 
 
 ## Notable Achievemets
 - Extends the life of the EEPROM chip by 64 times by using a paging technique to reduce the number of writes to the current data pointer
-- Reduced the flash memory footprint of the source code by xx% by using a custom hardware abstraction layer
+- Reduced the flash memory footprint of the source code by over 80% by using a custom hardware abstraction layer

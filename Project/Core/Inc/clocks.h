@@ -10,9 +10,16 @@
 
 #include "stm32f429xx.h"
 
-#define APB1_CLK_MHz 16
+#define APB1_CLK_MHz        16
+#define TIM7_PERIOD_MS		5000
+
+typedef enum {
+    SET,
+    CLEAR
+}Bit_State_e;
 
 void SysClockConfig(void);
-void Delay(uint32_t us);
+void Delay(uint32_t ms);
+uint8_t Timer_Flag_Set(void);
 
 #endif /* INC_CLOCKS_H_ */

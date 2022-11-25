@@ -5,7 +5,6 @@ Firmware developed in C for the STM32F429 microcontroller with custom hardware a
 This is a learning project with a focus on bare-metal programming of ARM-based devices. The goal is to develop firmware using the STMirco CMSIS library for register level programming of peripherals such as:
 - GPIO
 - ADC
-- DMA
 - I2C
 - Timers
 
